@@ -1,6 +1,7 @@
 package cz.hanusova.example.service
 
 import cz.hanusova.example.dto.EmployeeDto
+import cz.hanusova.example.model.Employee
 import cz.hanusova.example.repository.EmployeeRepository
 import spock.lang.Specification
 
@@ -21,7 +22,6 @@ class EmployeeServiceSpec extends Specification {
         def name = 'John'
         def surname = 'Doe'
         def birthDate = '2000-12-12'
-
         def employee = new EmployeeDto(name, surname, birthDate)
 
         when: 'Employee is saved'
@@ -52,8 +52,37 @@ class EmployeeServiceSpec extends Specification {
 
     def 'Return employee from DB' () {
         given: 'Employee in DB'
+        def name = 'John'
+        def surname = 'Doe'
+        def birthDate = LocalDate.of(2000, 12, 12)
+        def employee = new Employee(name: name, surname: surname, birthDate: birthDate)
+        employeeRepository.findFirstBySurname(surname) >> employee
 
+        when: 'Employee is searched'
+        def result = employeeService.getEmployeeBySurname(surname)
+
+        then: 'Employee is returned'
+        result.name == name
+        result.surname == surname
+        result.birthDate == birthDate.toString()
     }
 
+    def 'Should throw exception when trying to find non-existent employee' () {
+        given: 'Empty employee DB'
+        def surname = 'Doe'
+
+        employeeRepository.findFirstBySurname(_) >> new Employee()
+        employeeRepository.findFirstBySurname(_) >> null
+
+        employeeRepository.findFirstBySurname(_) >>> [new Employee(), null]
+
+        when: 'Employee is searched'
+        employeeService.getEmployeeBySurname(surname)
+
+        then: 'An exception is thrown'
+        def t = thrown(IllegalArgumentException)
+        t.message == "Employee with surname $surname does not exist"
+
+    }
 
 }

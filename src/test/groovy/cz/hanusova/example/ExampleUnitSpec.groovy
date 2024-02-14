@@ -1,5 +1,7 @@
 package cz.hanusova.example
 
+import spock.lang.IgnoreIf
+import spock.lang.Requires
 import spock.lang.Specification
 
 
@@ -78,5 +80,16 @@ class ExampleUnitSpec extends Specification {
         array.every({it > 0})
     }
 
+    @IgnoreIf({os.windows})
+    def 'This test will not run on Windows' () {
+        expect:
+        false
+    }
+
+    @Requires({os.windows})
+    def 'This test will run only on Windows' () {
+        expect:
+        true
+    }
 
 }

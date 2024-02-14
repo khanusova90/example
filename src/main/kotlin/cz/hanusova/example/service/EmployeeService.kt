@@ -30,7 +30,8 @@ class EmployeeService(
         }
     }
 
-    fun getEmployeeBySurname(surname: String): EmployeeDto {
-        return EmployeeDto("a", "b", "c")
-    }
+    fun getEmployeeBySurname(surname: String): EmployeeDto = EmployeeDto(
+        employeeRepository.findFirstBySurname(surname)
+            ?: throw IllegalArgumentException("Employee with surname $surname does not exist")
+    )
 }

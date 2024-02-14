@@ -31,7 +31,6 @@ dependencies {
     //Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.spockframework:spock-spring:2.4-M1-groovy-4.0")
-//    testImplementation ("org.apache.groovy:groovy:4.0.0")
 }
 
 tasks.withType<KotlinCompile> {
