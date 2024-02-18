@@ -13,6 +13,6 @@ class ExampleApplicationSpec extends Specification {
 
     def 'When context is loaded, then repositories are available' () {
         expect:
-        employeeRepository != null
+        employeeRepository
     }
 }
