@@ -14,7 +14,7 @@ class ExampleApplicationTests {
 
     @Test
     fun contextLoads() {
-        assertThat(employeeRepository).isNull()
+        assertThat(employeeRepository).isNotNull()
     }
 
 }

@@ -70,11 +70,7 @@ class EmployeeServiceSpec extends Specification {
     def 'Should throw exception when trying to find non-existent employee' () {
         given: 'Empty employee DB'
         def surname = 'Doe'
-
-        employeeRepository.findFirstBySurname(_) >> new Employee()
         employeeRepository.findFirstBySurname(_) >> null
-
-        employeeRepository.findFirstBySurname(_) >>> [new Employee(), null]
 
         when: 'Employee is searched'
         employeeService.getEmployeeBySurname(surname)
