@@ -4,6 +4,7 @@ import cz.hanusova.example.dto.EmployeeDto
 import cz.hanusova.example.model.Employee
 import cz.hanusova.example.repository.EmployeeRepository
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.time.LocalDate
 
@@ -11,10 +12,9 @@ import java.time.LocalDate
 class EmployeeServiceSpec extends Specification {
 
     def employeeRepository = Mock(EmployeeRepository)
-
     EmployeeRepository employeeRepositoryMock = Mock()
 
-
+    @Subject
     def employeeService = new EmployeeService(employeeRepository)
 
     def 'Employee is saved'() {
@@ -37,7 +37,7 @@ class EmployeeServiceSpec extends Specification {
 
     def "Should throw an exception when trying to save employee with invalid birth date #birthDate"() {
         given: 'Employee with invalid birth date'
-        def employee = new EmployeeDto('John', 'Doe', '2000-13-12')
+        def employee = new EmployeeDto('John', 'Doe', birthDate)
 
         when: 'Employee is saved'
         employeeService.createEmployee(employee)
